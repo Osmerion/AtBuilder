@@ -29,6 +29,8 @@ publishing {
         register<MavenPublication>("mavenJava") {
             from(components["java"])
 
+            artifactId = "atbuilder-runtime"
+
             pom {
                 name = "AtBuilder"
                 description = "AtBuilder generates safe builders for your records with support for nullable and omittable types."

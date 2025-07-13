@@ -86,6 +86,8 @@ publishing {
         register<MavenPublication>("mavenJava") {
             from(components["java"])
 
+            artifactId = "atbuilder-processor"
+
             pom {
                 name = "AtBuilder Annotation Processor"
                 description = "The AtBuilder annotation processor generates safe builders for your records."
