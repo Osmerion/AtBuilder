@@ -1,0 +1,118 @@
+name: Publish
+on:
+  - workflow_dispatch
+
+
+concurrency:
+  group: "publish"
+  cancel-in-progress: false
+
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version-file: .github/workflows/.java-version
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Gradle Assemble
+        run: ./gradlew assemble --info -S --show-version
+
+
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version-file: .github/workflows/.java-version
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Gradle Check
+        run: ./gradlew check --info -S --show-version
+
+
+  build-docs:
+    name: Build Documentation
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version-file: .github/workflows/.java-version
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build JavaDoc
+        run: ./gradlew javadoc --info -S --show-version
+
+  build-artifact-bundles:
+    name: Build Artifact Bundles
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version-file: .github/workflows/.java-version
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Artifact Bundle
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+        run: ./gradlew --init-script ./.github/init.gradle.kts artifactBundle --info -S --show-version
+
+      - name: Upload Artifact Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: "artifact-bundle"
+          path: "./build/libs/maven-artifact-bundle.tgz"
+
+  central-upload:
+    name: Upload to Central Portal
+    needs: [build-artifact-bundles, build-docs]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: "artifact-bundle"
+          path: .
+
+      - name: Upload to Central Portal
+        uses: TheMrMilchmann/central-portal-actions/upload-deployment@v0
+        with:
+          username: ${{ secrets.CENTRAL_PORTAL_USERNAME }}
+          password: ${{ secrets.CENTRAL_PORTAL_PASSWORD }}
+          bundle: ./maven-artifact-bundle.tgz
+          publishing-type: "user-managed"
