@@ -1,0 +1,8 @@
+[libraries]
+# com.osmerion.omittable - Omittable
+# https://github.com/Osmerion/Omittable
+omittable = { module = "com.osmerion.omittable:omittable", version = "0.1.0" }
+
+# org.jspecify - JSpecify
+# https://github.com/jspecify/jspecify
+jspecify = { module = "org.jspecify:jspecify", version = "1.0.0" }
