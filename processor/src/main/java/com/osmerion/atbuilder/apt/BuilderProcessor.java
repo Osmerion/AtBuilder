@@ -12,12 +12,14 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.util.Set;
 
 public final class BuilderProcessor extends AbstractProcessor {
 
+    private @Nullable Elements elements;
     private @Nullable Filer filer;
     private @Nullable BuilderGenerator generator;
     private @Nullable Messager messager;
@@ -26,6 +28,7 @@ public final class BuilderProcessor extends AbstractProcessor {
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
 
+        this.elements = processingEnv.getElementUtils();
         this.filer = processingEnv.getFiler();
         this.generator = new BuilderGenerator(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
         this.messager = processingEnv.getMessager();
@@ -33,7 +36,7 @@ public final class BuilderProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        assert this.filer != null && this.generator != null && this.messager != null;
+        assert this.elements != null && this.filer != null && this.generator != null && this.messager != null;
         for (Element element : roundEnv.getElementsAnnotatedWith(Builder.class)) {
             if (element.getKind() != ElementKind.RECORD) {
                 AnnotationMirror annotationMirror = element.getAnnotationMirrors().stream()
@@ -61,6 +64,7 @@ public final class BuilderProcessor extends AbstractProcessor {
 
             Buildable buildable = new Buildable(
                 ClassName.get(typeElement),
+                typeElement.getTypeParameters(),
                 typeElement.getRecordComponents().stream()
                     .map(component -> new Buildable.Component(
                         component.getSimpleName().toString(),

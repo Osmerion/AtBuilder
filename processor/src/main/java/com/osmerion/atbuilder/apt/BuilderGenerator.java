@@ -6,6 +6,7 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -39,6 +40,11 @@ final class BuilderGenerator {
 
         TypeSpec.Builder bTypeSpec = TypeSpec.classBuilder(builderClassName)
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+            .addTypeVariables(
+                buildable.typeParameters().stream()
+                    .map(this::annotatedTypeVariableName)
+                    .toList()
+            )
             .addFields(buildable.components().stream().map(this::generateField).toList())
             .addMethod(MethodSpec.constructorBuilder().build())
             .addMethods(buildable.components().stream().map(component -> this.generateMethod(component, builderClassName)).toList())
@@ -52,6 +58,16 @@ final class BuilderGenerator {
             .indent("    ")
             .skipJavaLangImports(true)
             .build();
+    }
+
+    private TypeVariableName annotatedTypeVariableName(TypeParameterElement element) {
+        String name = element.getSimpleName().toString();
+        List<TypeName> bounds = element.getBounds().stream()
+            .map(AnnotatedTypeNameConverter::get)
+            .toList();
+
+        return TypeVariableName.get(name, bounds.toArray(new TypeName[0]))
+            .annotated(element.getAnnotationMirrors().stream().map(AnnotationSpec::get).toList());
     }
 
     private MethodSpec generateBuildMethod(Buildable buildable) {
