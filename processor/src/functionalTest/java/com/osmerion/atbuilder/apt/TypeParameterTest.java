@@ -6,9 +6,14 @@ import com.tschuchort.compiletesting.SourceFile;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import static com.osmerion.atbuilder.apt.util.StringJavaFileObjectFactory.createJavaFileObject;
+import static com.osmerion.atbuilder.apt.util.StringJavaFileObjectFactory.*;
 import static org.assertj.core.api.Assertions.*;
 
+/**
+ * TODO doc
+ *
+ * @author  Leon Linhart
+ */
 public final class TypeParameterTest extends AbstractFunctionalTest {
 
     @Test

@@ -6,8 +6,8 @@ import com.tschuchort.compiletesting.SourceFile;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import static com.osmerion.atbuilder.apt.util.StringJavaFileObjectFactory.createJavaFileObject;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.osmerion.atbuilder.apt.util.StringJavaFileObjectFactory.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Functional tests that validate that the {@code @NullMarked} annotation is correctly applied to the generated
