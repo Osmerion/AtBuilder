@@ -72,6 +72,7 @@ final class BuilderGenerator {
 
     private MethodSpec generateBuildMethod(Buildable buildable) {
         MethodSpec.Builder bMethodSpec = MethodSpec.methodBuilder("build")
+            .addModifiers(Modifier.PUBLIC)
             .returns(buildable.className());
 
         StringJoiner joiner = new StringJoiner(",\n");
