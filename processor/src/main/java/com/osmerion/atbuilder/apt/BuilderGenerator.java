@@ -85,7 +85,7 @@ final class BuilderGenerator {
             }
         }
 
-        bMethodSpec.addCode("return new $T(\n" + joiner.toString().indent(4) + "\n);", buildable.className());
+        bMethodSpec.addCode("return new $T(\n" + joiner.toString().indent(4) + ");", buildable.className());
         return bMethodSpec.build();
     }
 

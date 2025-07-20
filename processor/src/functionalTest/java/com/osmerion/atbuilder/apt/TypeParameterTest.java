@@ -61,7 +61,6 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
-                
                         );
                     }
                 }
@@ -114,7 +113,6 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
-                
                         );
                     }
                 }
@@ -168,7 +166,6 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
-                
                         );
                     }
                 }
@@ -234,7 +231,6 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
-                
                         );
                     }
                 }

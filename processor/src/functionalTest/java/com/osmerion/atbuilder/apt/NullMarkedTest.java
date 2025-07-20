@@ -65,7 +65,6 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                     Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
-                
                         );
                     }
                 }
@@ -123,7 +122,6 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                     Foo.Bar build() {
                         return new Foo.Bar(
                             this.value.getOrThrow()
-                
                         );
                     }
                 }
