@@ -8,7 +8,6 @@ import org.jspecify.annotations.Nullable;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
@@ -26,11 +25,9 @@ final class BuilderGenerator {
 
     private static final ClassName OMITTABLE_CLASS_NAME = ClassName.get(Omittable.class);
 
-    private final Elements elements;
     private final Types types;
 
-    BuilderGenerator(Elements elements, Types types) {
-        this.elements = elements;
+    BuilderGenerator(Types types) {
         this.types = types;
     }
 

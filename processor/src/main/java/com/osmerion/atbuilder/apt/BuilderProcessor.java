@@ -30,7 +30,7 @@ public final class BuilderProcessor extends AbstractProcessor {
 
         this.elements = processingEnv.getElementUtils();
         this.filer = processingEnv.getFiler();
-        this.generator = new BuilderGenerator(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+        this.generator = new BuilderGenerator(processingEnv.getTypeUtils());
         this.messager = processingEnv.getMessager();
     }
 
