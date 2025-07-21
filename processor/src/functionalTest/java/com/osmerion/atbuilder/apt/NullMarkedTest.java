@@ -147,4 +147,136 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
             );
     }
 
+
+    @Test
+    public void testNullUnmarked() {
+        SourceFile cls = createJavaFileObject(
+            "com/example/Foo.java",
+            """
+            package com.example;
+            
+            @com.osmerion.atbuilder.Builder
+            @org.jspecify.annotations.NullUnmarked
+            public record Foo(String value) {}
+            """
+        );
+
+        JvmCompilationResult result = this.compile(cls);
+
+        assertThat(result.getExitCode()).isEqualTo(KotlinCompilation.ExitCode.OK);
+        assertThat(result.getSourcesGeneratedByAnnotationProcessor())
+            .hasSize(1)
+            .first(InstanceOfAssertFactories.FILE)
+            .content()
+            .isEqualTo(
+                """
+                package com.example;
+                
+                import com.osmerion.omittable.Omittable;
+                import java.util.Objects;
+                import org.jspecify.annotations.NullUnmarked;
+                
+                @NullUnmarked
+                public final class FooBuilder {
+                    private Omittable<String> value = Omittable.absent();
+                
+                    FooBuilder() {
+                    }
+                
+                    /**
+                     * Sets the value of the {@link Foo#value() value} component.
+                     *
+                     * @param value the value for the component
+                     *
+                     * @return  this builder instance
+                     */
+                    public FooBuilder value(String value) {
+                        this.value = Omittable.of(Objects.requireNonNull(value, "Component 'value' may not be null"));
+                        return this;
+                    }
+                
+                    /**
+                     * Builds a new {@link Foo} instance with the values set in this builder.
+                     *
+                     * @return the newly created instance
+                     *
+                     * @throws IllegalStateException   if any of the required components are not set
+                     */
+                    public Foo build() {
+                        return new Foo(
+                            this.value.getOrThrow()
+                        );
+                    }
+                }
+                """
+            );
+    }
+
+    @Test
+    public void testNullUnmarkedOverride() {
+        SourceFile cls = createJavaFileObject(
+            "com/example/Foo.java",
+            """
+            package com.example;
+            
+            @org.jspecify.annotations.NullMarked
+            public interface Foo {
+                @com.osmerion.atbuilder.Builder
+                @org.jspecify.annotations.NullUnmarked
+                record Bar(String value) {}
+            }
+            """
+        );
+
+        JvmCompilationResult result = this.compile(cls);
+
+        assertThat(result.getExitCode()).isEqualTo(KotlinCompilation.ExitCode.OK);
+        assertThat(result.getSourcesGeneratedByAnnotationProcessor())
+            .hasSize(1)
+            .first(InstanceOfAssertFactories.FILE)
+            .content()
+            .isEqualTo(
+                """
+                package com.example;
+
+                import com.osmerion.omittable.Omittable;
+                import java.util.Objects;
+                import org.jspecify.annotations.NullUnmarked;
+                
+                @NullUnmarked
+                public final class BarBuilder {
+                    private Omittable<String> value = Omittable.absent();
+                
+                    BarBuilder() {
+                    }
+                
+                    /**
+                     * Sets the value of the {@link Foo.Bar#value() value} component.
+                     *
+                     * @param value the value for the component
+                     *
+                     * @return  this builder instance
+                     */
+                    public BarBuilder value(String value) {
+                        this.value = Omittable.of(Objects.requireNonNull(value, "Component 'value' may not be null"));
+                        return this;
+                    }
+                
+                    /**
+                     * Builds a new {@link Foo.Bar} instance with the values set in this builder.
+                     *
+                     * @return the newly created instance
+                     *
+                     * @throws IllegalStateException   if any of the required components are not set
+                     */
+                    public Foo.Bar build() {
+                        return new Foo.Bar(
+                            this.value.getOrThrow()
+                        );
+                    }
+                }
+                """
+            );
+    }
+
 }

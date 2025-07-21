@@ -3,6 +3,7 @@ package com.osmerion.atbuilder.apt;
 import com.osmerion.omittable.Omittable;
 import com.palantir.javapoet.*;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.NullUnmarked;
 import org.jspecify.annotations.Nullable;
 
 import javax.lang.model.element.Modifier;
@@ -22,6 +23,7 @@ final class BuilderGenerator {
 
     private static final ClassName NULLABLE_CLASS_NAME = ClassName.get(Nullable.class);
     private static final ClassName NULLMARKED_CLASS_NAME = ClassName.get(NullMarked.class);
+    private static final ClassName NULLUNMARKED_CLASS_NAME = ClassName.get(NullUnmarked.class);
 
     private static final ClassName OMITTABLE_CLASS_NAME = ClassName.get(Omittable.class);
 
@@ -36,6 +38,11 @@ final class BuilderGenerator {
         ClassName builderClassName = ClassName.get(packageName, buildable.className().simpleName() + "Builder");
 
         TypeSpec.Builder bTypeSpec = TypeSpec.classBuilder(builderClassName)
+//            .addJavadoc(
+//                """
+//                A builder for {@link $T} instances.
+//                """
+//            )
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             .addTypeVariables(
                 buildable.typeParameters().stream()
@@ -47,8 +54,9 @@ final class BuilderGenerator {
             .addMethods(buildable.components().stream().map(component -> this.generateMethod(buildable, component, builderClassName)).toList())
             .addMethod(this.generateBuildMethod(buildable));
 
-        if (buildable.isNullMarked()) {
-            bTypeSpec.addAnnotation(NULLMARKED_CLASS_NAME);
+        switch (buildable.nullMarker()) {
+            case MARKED -> bTypeSpec.addAnnotation(NULLMARKED_CLASS_NAME);
+            case UNMARKED -> bTypeSpec.addAnnotation(NULLUNMARKED_CLASS_NAME);
         }
 
         return JavaFile.builder(packageName, bTypeSpec.build())

@@ -10,7 +10,7 @@ record Buildable(
     ClassName className,
     List<? extends TypeParameterElement> typeParameters,
     List<Component> components,
-    boolean isNullMarked
+    NullMarker nullMarker
 ) {
 
     record Component(

@@ -4,6 +4,7 @@ import com.osmerion.atbuilder.Builder;
 import com.palantir.javapoet.ClassName;
 import com.palantir.javapoet.JavaFile;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.NullUnmarked;
 import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.*;
@@ -48,13 +49,16 @@ public final class BuilderProcessor extends AbstractProcessor {
             }
 
             TypeElement typeElement = (TypeElement) element;
-            boolean isNullMarked = false;
+            NullMarker nullMarker = NullMarker.NONE;
 
             {
                 Element currentElement = typeElement;
                 while (currentElement.getKind() != ElementKind.PACKAGE) {
                     if (currentElement.getAnnotation(NullMarked.class) != null) {
-                        isNullMarked = true;
+                        nullMarker = NullMarker.MARKED;
+                        break;
+                    } else if (currentElement.getAnnotation(NullUnmarked.class) != null) {
+                        nullMarker = NullMarker.UNMARKED;
                         break;
                     }
 
@@ -71,7 +75,7 @@ public final class BuilderProcessor extends AbstractProcessor {
                         component.asType()
                     ))
                     .toList(),
-                isNullMarked
+                nullMarker
             );
 
             JavaFile builderFile = this.generator.generateBuilder(buildable);
