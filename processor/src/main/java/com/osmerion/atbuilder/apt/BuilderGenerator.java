@@ -106,16 +106,16 @@ final class BuilderGenerator {
     }
 
     private FieldSpec generateField(Buildable.Component component) {
-        List<AnnotationSpec> annotationSpecs = component.type().getAnnotationMirrors().stream()
-            .filter(annotationMirror -> this.isAnnotationApplicableToAny(annotationMirror.getAnnotationType(), Set.of(ElementType.FIELD, ElementType.TYPE_USE)))
+        List<AnnotationSpec> typeAnnotationSpecs = component.annotationMirrors().stream()
+            .filter(annotationMirror -> this.isAnnotationApplicableToAny(annotationMirror.getAnnotationType(), Set.of(ElementType.TYPE_USE)))
             .map(AnnotationSpec::get)
             .toList();
 
         TypeName fieldTypeName;
         if (this.isOmittable(component)) {
-            fieldTypeName = TypeName.get(component.type()).annotated(annotationSpecs);
+            fieldTypeName = TypeName.get(component.type()).annotated(typeAnnotationSpecs);
         } else {
-            fieldTypeName = ParameterizedTypeName.get(ClassName.get(Omittable.class), TypeName.get(component.type()).annotated(annotationSpecs));
+            fieldTypeName = ParameterizedTypeName.get(ClassName.get(Omittable.class), TypeName.get(component.type()).annotated(typeAnnotationSpecs));
         }
 
         return FieldSpec.builder(fieldTypeName, component.name(), Modifier.PRIVATE)
@@ -124,8 +124,13 @@ final class BuilderGenerator {
     }
 
     private MethodSpec generateMethod(Buildable buildable, Buildable.Component component, ClassName builderClassName) {
-        List<AnnotationSpec> annotationSpecs = component.type().getAnnotationMirrors().stream()
-            .filter(annotationMirror -> this.isAnnotationApplicableToAny(annotationMirror.getAnnotationType(), Set.of(ElementType.PARAMETER, ElementType.TYPE_USE)))
+        List<AnnotationSpec> paramAnnotationSpecs = component.annotationMirrors().stream()
+            .filter(annotationMirror -> this.isAnnotationApplicableToAny(annotationMirror.getAnnotationType(), Set.of(ElementType.PARAMETER)))
+            .map(AnnotationSpec::get)
+            .toList();
+
+        List<AnnotationSpec> typeAnnotationSpecs = component.type().getAnnotationMirrors().stream()
+            .filter(annotationMirror -> this.isAnnotationApplicableToAny(annotationMirror.getAnnotationType(), Set.of(ElementType.TYPE_USE)))
             .map(AnnotationSpec::get)
             .toList();
 
@@ -145,7 +150,11 @@ final class BuilderGenerator {
             )
             .addModifiers(Modifier.PUBLIC)
             .returns(builderClassName)
-            .addParameter(TypeName.get(component.type()).annotated(annotationSpecs), component.name());
+            .addParameter(
+                ParameterSpec.builder(TypeName.get(component.type()).annotated(typeAnnotationSpecs), component.name())
+                    .addAnnotations(paramAnnotationSpecs)
+                    .build()
+            );
 
         if (this.isNullable(component)) {
             bMethodSpec.addStatement("this.$N = $T.of($N)", component.name(), OMITTABLE_CLASS_NAME, component.name());
@@ -159,7 +168,7 @@ final class BuilderGenerator {
     }
 
     private boolean isAnnotationApplicableToAny(DeclaredType annotationType, Set<?> targets) {
-        Target targetAnnotation = annotationType.getAnnotation(Target.class);
+        Target targetAnnotation = annotationType.asElement().getAnnotation(Target.class);
 
         if (targetAnnotation == null) {
             return targets.contains(ElementType.TYPE)

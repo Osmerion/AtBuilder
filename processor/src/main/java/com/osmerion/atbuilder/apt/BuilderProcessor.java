@@ -9,16 +9,34 @@ import org.jspecify.annotations.Nullable;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public final class BuilderProcessor extends AbstractProcessor {
+
+    private static boolean isPrimaryCtor(Element element, List<? extends RecordComponentElement> componentElements) {
+        if (element.getKind() != ElementKind.CONSTRUCTOR) return false;
+
+        ExecutableElement executableElement = (ExecutableElement) element;
+        if (executableElement.getParameters().size() != componentElements.size()) return false;
+
+        for (int i = 0; i < executableElement.getParameters().size(); i++) {
+            VariableElement parameterElement = executableElement.getParameters().get(i);
+            RecordComponentElement componentElement = componentElements.get(i);
+
+            if (!parameterElement.getSimpleName().contentEquals(componentElement.getSimpleName())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     private @Nullable Elements elements;
     private @Nullable Filer filer;
@@ -66,14 +84,34 @@ public final class BuilderProcessor extends AbstractProcessor {
                 }
             }
 
+            Optional<? extends Element> optPrimaryCtor = typeElement.getEnclosedElements()
+                .stream()
+                .filter(it -> isPrimaryCtor(it, typeElement.getRecordComponents()))
+                .findFirst();
+
+            if (optPrimaryCtor.isEmpty()) {
+                this.messager.printMessage(Diagnostic.Kind.ERROR, "No primary constructor found for record.", element);
+                continue;
+            }
+
+            ExecutableElement primaryCtor = (ExecutableElement) optPrimaryCtor.get();
+
             Buildable buildable = new Buildable(
                 ClassName.get(typeElement),
                 typeElement.getTypeParameters(),
                 typeElement.getRecordComponents().stream()
-                    .map(component -> new Buildable.Component(
-                        component.getSimpleName().toString(),
-                        component.asType()
-                    ))
+                    .map(component -> {
+                        List<? extends AnnotationMirror> annotationMirrors = Stream.concat(
+                            primaryCtor.getParameters().stream().filter(it -> it.getSimpleName().contentEquals(component.getSimpleName())).findFirst().orElseThrow().getAnnotationMirrors().stream(),
+                            component.getAnnotationMirrors().stream()
+                        ).toList();
+
+                        return new Buildable.Component(
+                            component.getSimpleName().toString(),
+                            annotationMirrors,
+                            component.asType()
+                        );
+                    })
                     .toList(),
                 nullMarker
             );
