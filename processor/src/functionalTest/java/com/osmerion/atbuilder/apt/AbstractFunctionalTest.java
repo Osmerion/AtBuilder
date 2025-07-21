@@ -16,7 +16,7 @@ public abstract class AbstractFunctionalTest {
 
         KotlinCompilation compilation = new KotlinCompilation();
         compilation.setClasspaths(classpath);
-        compilation.setJavacArguments(List.of("--release", "17"));
+        compilation.setJavacArguments(List.of("--release", "17", "-Xlint:all"));
         compilation.setAnnotationProcessors(List.of(new BuilderProcessor()));
         compilation.setSources(Arrays.asList(sources));
         compilation.setInheritClassPath(true);
