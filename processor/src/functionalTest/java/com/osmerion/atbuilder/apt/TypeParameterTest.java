@@ -42,6 +42,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                 import com.osmerion.omittable.Omittable;
                 import java.util.Objects;
                 
+                /**
+                 * A builder for {@link Foo} instances.
+                 */
                 public final class FooBuilder<T> {
                     private Omittable<T> value = Omittable.absent();
                 
@@ -103,6 +106,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                 import com.osmerion.omittable.Omittable;
                 import java.util.Objects;
                 
+                /**
+                 * A builder for {@link Foo} instances.
+                 */
                 public final class FooBuilder<T extends CharSequence> {
                     private Omittable<T> value = Omittable.absent();
                 
@@ -165,6 +171,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                 import java.util.Objects;
                 import org.jspecify.annotations.Nullable;
                 
+                /**
+                 * A builder for {@link Foo} instances.
+                 */
                 public final class FooBuilder<T extends @Nullable CharSequence> {
                     private Omittable<T> value = Omittable.absent();
                 
@@ -239,6 +248,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                 import com.osmerion.omittable.Omittable;
                 import java.util.Objects;
                 
+                /**
+                 * A builder for {@link Foo} instances.
+                 */
                 public final class FooBuilder<@Marker T extends CharSequence> {
                     private Omittable<T> value = Omittable.absent();
                 

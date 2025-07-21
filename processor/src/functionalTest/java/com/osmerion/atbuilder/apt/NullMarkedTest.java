@@ -45,6 +45,9 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                 import java.util.Objects;
                 import org.jspecify.annotations.NullMarked;
                 
+                /**
+                 * A builder for {@link Foo} instances.
+                 */
                 @NullMarked
                 public final class FooBuilder {
                     private Omittable<String> value = Omittable.absent();
@@ -111,6 +114,9 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                 import java.util.Objects;
                 import org.jspecify.annotations.NullMarked;
                 
+                /**
+                 * A builder for {@link Foo.Bar} instances.
+                 */
                 @NullMarked
                 public final class BarBuilder {
                     private Omittable<String> value = Omittable.absent();
@@ -176,6 +182,9 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                 import java.util.Objects;
                 import org.jspecify.annotations.NullUnmarked;
                 
+                /**
+                 * A builder for {@link Foo} instances.
+                 */
                 @NullUnmarked
                 public final class FooBuilder {
                     private Omittable<String> value = Omittable.absent();
@@ -243,6 +252,9 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                 import java.util.Objects;
                 import org.jspecify.annotations.NullUnmarked;
                 
+                /**
+                 * A builder for {@link Foo.Bar} instances.
+                 */
                 @NullUnmarked
                 public final class BarBuilder {
                     private Omittable<String> value = Omittable.absent();

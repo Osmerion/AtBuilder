@@ -57,6 +57,9 @@ public final class AnnotationTest extends AbstractFunctionalTest {
                 import java.util.Objects;
                 import org.jspecify.annotations.NullMarked;
                 
+                /**
+                 * A builder for {@link Foo} instances.
+                 */
                 @NullMarked
                 public final class FooBuilder {
                     private Omittable<String> value = Omittable.absent();

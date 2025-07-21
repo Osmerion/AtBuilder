@@ -38,11 +38,12 @@ final class BuilderGenerator {
         ClassName builderClassName = ClassName.get(packageName, buildable.className().simpleName() + "Builder");
 
         TypeSpec.Builder bTypeSpec = TypeSpec.classBuilder(builderClassName)
-//            .addJavadoc(
-//                """
-//                A builder for {@link $T} instances.
-//                """
-//            )
+            .addJavadoc(
+                """
+                A builder for {@link $T} instances.
+                """,
+                buildable.className()
+            )
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             .addTypeVariables(
                 buildable.typeParameters().stream()
