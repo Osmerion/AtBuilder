@@ -49,7 +49,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     }
                 
                     /**
-                     * TODO doc
+                     * Sets the value of the {@link Foo#value() value} component.
+                     *
+                     * @param value the value for the component
                      *
                      * @return  this builder instance
                      */
@@ -58,6 +60,13 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                         return this;
                     }
                 
+                    /**
+                     * Builds a new {@link Foo} instance with the values set in this builder.
+                     *
+                     * @return the newly created instance
+                     *
+                     * @throws IllegalStateException   if any of the required components are not set
+                     */
                     public Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
@@ -101,7 +110,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     }
                 
                     /**
-                     * TODO doc
+                     * Sets the value of the {@link Foo#value() value} component.
+                     *
+                     * @param value the value for the component
                      *
                      * @return  this builder instance
                      */
@@ -110,6 +121,13 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                         return this;
                     }
                 
+                    /**
+                     * Builds a new {@link Foo} instance with the values set in this builder.
+                     *
+                     * @return the newly created instance
+                     *
+                     * @throws IllegalStateException   if any of the required components are not set
+                     */
                     public Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
@@ -154,7 +172,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     }
                 
                     /**
-                     * TODO doc
+                     * Sets the value of the {@link Foo#value() value} component.
+                     *
+                     * @param value the value for the component
                      *
                      * @return  this builder instance
                      */
@@ -163,6 +183,13 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                         return this;
                     }
                 
+                    /**
+                     * Builds a new {@link Foo} instance with the values set in this builder.
+                     *
+                     * @return the newly created instance
+                     *
+                     * @throws IllegalStateException   if any of the required components are not set
+                     */
                     public Foo build() {
                         return new Foo(
                             this.value.getOrThrow()
@@ -219,7 +246,9 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     }
                 
                     /**
-                     * TODO doc
+                     * Sets the value of the {@link Foo#value() value} component.
+                     *
+                     * @param value the value for the component
                      *
                      * @return  this builder instance
                      */
@@ -228,6 +257,13 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                         return this;
                     }
                 
+                    /**
+                     * Builds a new {@link Foo} instance with the values set in this builder.
+                     *
+                     * @return the newly created instance
+                     *
+                     * @throws IllegalStateException   if any of the required components are not set
+                     */
                     public Foo build() {
                         return new Foo(
                             this.value.getOrThrow()

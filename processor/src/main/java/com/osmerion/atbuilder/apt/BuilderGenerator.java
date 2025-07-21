@@ -47,7 +47,7 @@ final class BuilderGenerator {
             )
             .addFields(buildable.components().stream().map(this::generateField).toList())
             .addMethod(MethodSpec.constructorBuilder().build())
-            .addMethods(buildable.components().stream().map(component -> this.generateMethod(component, builderClassName)).toList())
+            .addMethods(buildable.components().stream().map(component -> this.generateMethod(buildable, component, builderClassName)).toList())
             .addMethod(this.generateBuildMethod(buildable));
 
         if (buildable.isNullMarked()) {
@@ -72,6 +72,16 @@ final class BuilderGenerator {
 
     private MethodSpec generateBuildMethod(Buildable buildable) {
         MethodSpec.Builder bMethodSpec = MethodSpec.methodBuilder("build")
+            .addJavadoc(
+                """
+                Builds a new {@link $T} instance with the values set in this builder.
+                
+                @return the newly created instance
+                
+                @throws IllegalStateException   if any of the required components are not set
+                """,
+                buildable.className()
+            )
             .addModifiers(Modifier.PUBLIC)
             .returns(buildable.className());
 
@@ -108,7 +118,7 @@ final class BuilderGenerator {
             .build();
     }
 
-    private MethodSpec generateMethod(Buildable.Component component, ClassName builderClassName) {
+    private MethodSpec generateMethod(Buildable buildable, Buildable.Component component, ClassName builderClassName) {
         List<AnnotationSpec> annotationSpecs = component.type().getAnnotationMirrors().stream()
             .filter(annotationMirror -> this.isAnnotationApplicableToAny(annotationMirror.getAnnotationType(), Set.of(ElementType.PARAMETER, ElementType.TYPE_USE)))
             .map(AnnotationSpec::get)
@@ -117,10 +127,16 @@ final class BuilderGenerator {
         MethodSpec.Builder bMethodSpec = MethodSpec.methodBuilder(component.name())
             .addJavadoc(
                 """
-                TODO doc
+                Sets the value of the {@link $T#$N() $N} component.
+                
+                @param $N the value for the component
                 
                 @return  this builder instance
-                """
+                """,
+                buildable.className(),
+                component.name(),
+                component.name(),
+                component.name()
             )
             .addModifiers(Modifier.PUBLIC)
             .returns(builderClassName)
