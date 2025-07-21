@@ -10,7 +10,7 @@ import static com.osmerion.atbuilder.apt.util.StringJavaFileObjectFactory.*;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- * TODO doc
+ * Functional tests that validate that type parameters of annotated records are correctly handled by the processor.
  *
  * @author  Leon Linhart
  */
