@@ -6,7 +6,7 @@ import com.tschuchort.compiletesting.SourceFile;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import static com.osmerion.atbuilder.apt.util.StringJavaFileObjectFactory.createJavaFileObject;
+import static com.osmerion.atbuilder.apt.util.StringFileObjectFactory.createJavaFileObject;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
