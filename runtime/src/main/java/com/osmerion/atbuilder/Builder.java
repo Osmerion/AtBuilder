@@ -2,6 +2,7 @@ package com.osmerion.atbuilder;
 
 import com.osmerion.omittable.Omittable;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.NullUnmarked;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.ElementType;
@@ -49,7 +50,8 @@ import java.lang.annotation.Target;
  *
  * <p>Applicable annotations from record components are copied to the generated builder. Notably, this preserves
  * nullability information carried by annotations (such as {@link Nullable}). Additionally, if the annotated record is
- * {@link NullMarked null-marked}, the generated builder will also be null-marked.</p>
+ * {@link NullMarked null-marked} or {@link NullUnmarked null-unmarked}, the generated builder will also be annotated
+ * accordingly.</p>
  *
  * <pre>{@code
  * @Builder
