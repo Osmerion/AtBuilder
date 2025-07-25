@@ -116,7 +116,7 @@ final class BuilderGenerator {
         if (this.isOmittable(component)) {
             fieldTypeName = TypeName.get(component.type()).annotated(typeAnnotationSpecs);
         } else {
-            fieldTypeName = ParameterizedTypeName.get(ClassName.get(Omittable.class), TypeName.get(component.type()).annotated(typeAnnotationSpecs));
+            fieldTypeName = ParameterizedTypeName.get(ClassName.get(Omittable.class), TypeName.get(component.type()).box().annotated(typeAnnotationSpecs));
         }
 
         return FieldSpec.builder(fieldTypeName, component.name(), Modifier.PRIVATE)
@@ -157,7 +157,7 @@ final class BuilderGenerator {
                     .build()
             );
 
-        if (this.isNullable(component)) {
+        if (this.isNullable(component) || component.type().getKind().isPrimitive()) {
             bMethodSpec.addStatement("this.$N = $T.of($N)", component.name(), OMITTABLE_CLASS_NAME, component.name());
         } else {
             bMethodSpec.addStatement("this.$N = $T.of($T.requireNonNull($N, \"Component '$N' may not be null\"))", component.name(), OMITTABLE_CLASS_NAME, OBJECTS_CLASS_NAME, component.name(), component.name());
