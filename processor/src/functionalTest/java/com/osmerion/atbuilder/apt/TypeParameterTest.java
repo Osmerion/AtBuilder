@@ -51,6 +51,10 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     FooBuilder() {
                     }
                 
+                    FooBuilder(Foo<T> other) {
+                        this.value = Omittable.of(other.value());
+                    }
+                
                     /**
                      * Sets the value of the {@link Foo#value() value} component.
                      *
@@ -58,7 +62,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @return  this builder instance
                      */
-                    public FooBuilder value(T value) {
+                    public FooBuilder<T> value(T value) {
                         this.value = Omittable.of(Objects.requireNonNull(value, "Component 'value' may not be null"));
                         return this;
                     }
@@ -70,8 +74,8 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @throws IllegalStateException   if any of the required components are not set
                      */
-                    public Foo build() {
-                        return new Foo(
+                    public Foo<T> build() {
+                        return new Foo<T>(
                             this.value.getOrThrow()
                         );
                     }
@@ -115,6 +119,10 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     FooBuilder() {
                     }
                 
+                    FooBuilder(Foo<T> other) {
+                        this.value = Omittable.of(other.value());
+                    }
+                
                     /**
                      * Sets the value of the {@link Foo#value() value} component.
                      *
@@ -122,7 +130,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @return  this builder instance
                      */
-                    public FooBuilder value(T value) {
+                    public FooBuilder<T> value(T value) {
                         this.value = Omittable.of(Objects.requireNonNull(value, "Component 'value' may not be null"));
                         return this;
                     }
@@ -134,8 +142,8 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @throws IllegalStateException   if any of the required components are not set
                      */
-                    public Foo build() {
-                        return new Foo(
+                    public Foo<T> build() {
+                        return new Foo<T>(
                             this.value.getOrThrow()
                         );
                     }
@@ -180,6 +188,10 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     FooBuilder() {
                     }
                 
+                    FooBuilder(Foo<T> other) {
+                        this.value = Omittable.of(other.value());
+                    }
+                
                     /**
                      * Sets the value of the {@link Foo#value() value} component.
                      *
@@ -187,7 +199,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @return  this builder instance
                      */
-                    public FooBuilder value(T value) {
+                    public FooBuilder<T> value(T value) {
                         this.value = Omittable.of(Objects.requireNonNull(value, "Component 'value' may not be null"));
                         return this;
                     }
@@ -199,8 +211,8 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @throws IllegalStateException   if any of the required components are not set
                      */
-                    public Foo build() {
-                        return new Foo(
+                    public Foo<T> build() {
+                        return new Foo<T>(
                             this.value.getOrThrow()
                         );
                     }
@@ -257,6 +269,10 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                     FooBuilder() {
                     }
                 
+                    FooBuilder(Foo<T> other) {
+                        this.value = Omittable.of(other.value());
+                    }
+                
                     /**
                      * Sets the value of the {@link Foo#value() value} component.
                      *
@@ -264,7 +280,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @return  this builder instance
                      */
-                    public FooBuilder value(T value) {
+                    public FooBuilder<T> value(T value) {
                         this.value = Omittable.of(Objects.requireNonNull(value, "Component 'value' may not be null"));
                         return this;
                     }
@@ -276,8 +292,8 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      *
                      * @throws IllegalStateException   if any of the required components are not set
                      */
-                    public Foo build() {
-                        return new Foo(
+                    public Foo<T> build() {
+                        return new Foo<T>(
                             this.value.getOrThrow()
                         );
                     }

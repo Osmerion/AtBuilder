@@ -55,6 +55,10 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                     FooBuilder() {
                     }
                 
+                    FooBuilder(Foo other) {
+                        this.value = Omittable.of(other.value());
+                    }
+                
                     /**
                      * Sets the value of the {@link Foo#value() value} component.
                      *
@@ -122,6 +126,10 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                     private Omittable<String> value = Omittable.absent();
                 
                     BarBuilder() {
+                    }
+                
+                    BarBuilder(Foo.Bar other) {
+                        this.value = Omittable.of(other.value());
                     }
                 
                     /**
@@ -192,6 +200,10 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                     FooBuilder() {
                     }
                 
+                    FooBuilder(Foo other) {
+                        this.value = Omittable.of(other.value());
+                    }
+                
                     /**
                      * Sets the value of the {@link Foo#value() value} component.
                      *
@@ -260,6 +272,10 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                     private Omittable<String> value = Omittable.absent();
                 
                     BarBuilder() {
+                    }
+                
+                    BarBuilder(Foo.Bar other) {
+                        this.value = Omittable.of(other.value());
                     }
                 
                     /**

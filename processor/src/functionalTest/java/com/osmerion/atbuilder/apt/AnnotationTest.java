@@ -67,6 +67,10 @@ public final class AnnotationTest extends AbstractFunctionalTest {
                     FooBuilder() {
                     }
                 
+                    FooBuilder(Foo other) {
+                        this.value = Omittable.of(other.value());
+                    }
+
                     /**
                      * Sets the value of the {@link Foo#value() value} component.
                      *

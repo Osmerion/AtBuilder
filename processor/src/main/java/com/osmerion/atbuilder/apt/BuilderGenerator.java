@@ -52,6 +52,7 @@ final class BuilderGenerator {
             )
             .addFields(buildable.components().stream().map(this::generateField).toList())
             .addMethod(MethodSpec.constructorBuilder().build())
+            .addMethod(this.generateCopyConstructor(buildable))
             .addMethods(buildable.components().stream().map(component -> this.generateMethod(buildable, component, builderClassName)).toList())
             .addMethod(this.generateBuildMethod(buildable));
 
@@ -77,6 +78,8 @@ final class BuilderGenerator {
     }
 
     private MethodSpec generateBuildMethod(Buildable buildable) {
+        TypeName parametrizedBuildable = this.getParametrizedTypeName(buildable.className(), buildable);
+
         MethodSpec.Builder bMethodSpec = MethodSpec.methodBuilder("build")
             .addJavadoc(
                 """
@@ -89,7 +92,7 @@ final class BuilderGenerator {
                 buildable.className()
             )
             .addModifiers(Modifier.PUBLIC)
-            .returns(buildable.className());
+            .returns(parametrizedBuildable);
 
         StringJoiner joiner = new StringJoiner(",\n");
         for (Buildable.Component component : buildable.components()) {
@@ -102,7 +105,22 @@ final class BuilderGenerator {
             }
         }
 
-        bMethodSpec.addCode("return new $T(\n" + joiner.toString().indent(4) + ");", buildable.className());
+        bMethodSpec.addCode("return new $T(\n" + joiner.toString().indent(4) + ");", parametrizedBuildable);
+        return bMethodSpec.build();
+    }
+
+    private MethodSpec generateCopyConstructor(Buildable buildable) {
+        MethodSpec.Builder bMethodSpec = MethodSpec.constructorBuilder()
+            .addParameter(this.getParametrizedTypeName(buildable.className(), buildable), "other");
+
+        for (Buildable.Component component : buildable.components()) {
+            if (this.isOmittable(component)) {
+                bMethodSpec.addStatement("this.$N = other.$N()", component.name(), component.name());
+            } else {
+                bMethodSpec.addStatement("this.$N = $T.of(other.$N())", component.name(), OMITTABLE_CLASS_NAME, component.name());
+            }
+        }
+
         return bMethodSpec.build();
     }
 
@@ -150,7 +168,7 @@ final class BuilderGenerator {
                 component.name()
             )
             .addModifiers(Modifier.PUBLIC)
-            .returns(builderClassName)
+            .returns(this.getParametrizedTypeName(builderClassName, buildable))
             .addParameter(
                 ParameterSpec.builder(TypeName.get(component.type()).annotated(typeAnnotationSpecs), component.name())
                     .addAnnotations(paramAnnotationSpecs)
@@ -166,6 +184,20 @@ final class BuilderGenerator {
         bMethodSpec.addStatement("return this");
 
         return bMethodSpec.build();
+    }
+
+    private TypeName getParametrizedTypeName(ClassName baseName, Buildable buildable) {
+        if (buildable.typeParameters().isEmpty()) {
+            return baseName;
+        }
+
+        return ParameterizedTypeName.get(
+            baseName,
+            buildable.typeParameters()
+                .stream()
+                .map(typeParameterElement -> TypeName.get(typeParameterElement.asType()))
+                .toArray(TypeName[]::new)
+        );
     }
 
     private boolean isAnnotationApplicableToAny(DeclaredType annotationType, Set<?> targets) {
