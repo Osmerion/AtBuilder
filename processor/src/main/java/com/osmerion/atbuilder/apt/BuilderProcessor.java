@@ -117,7 +117,6 @@ public final class BuilderProcessor extends AbstractProcessor {
             );
 
             JavaFile builderFile = this.generator.generateBuilder(buildable);
-            this.messager.printMessage(Diagnostic.Kind.NOTE, "Generated builder file: " + builderFile);
 
             try {
                 builderFile.writeTo(this.filer);
