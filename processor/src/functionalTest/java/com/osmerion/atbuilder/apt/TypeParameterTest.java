@@ -76,7 +76,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      */
                     public Foo<T> build() {
                         return new Foo<T>(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }
@@ -144,7 +144,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      */
                     public Foo<T> build() {
                         return new Foo<T>(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }
@@ -213,7 +213,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      */
                     public Foo<T> build() {
                         return new Foo<T>(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }
@@ -294,7 +294,7 @@ public final class TypeParameterTest extends AbstractFunctionalTest {
                      */
                     public Foo<T> build() {
                         return new Foo<T>(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }

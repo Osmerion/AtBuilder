@@ -78,7 +78,7 @@ public final class BoxTest extends AbstractFunctionalTest {
                      */
                     public Foo build() {
                         return new Foo(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }

@@ -99,9 +99,7 @@ final class BuilderGenerator {
             if (this.isOmittable(component)) {
                 joiner.add("this." + component.name());
             } else {
-                // TODO Consider adding orElseThrow() method to Omittable
-//                joiner.add("this." + component.name() + ".orElseThrow(() -> new IllegalStateException(\"Component '" + component.name() + "' is not set\"))");
-                joiner.add("this." + component.name() + ".getOrThrow()");
+                joiner.add("this." + component.name() + ".orElseThrow(() -> new IllegalStateException(\"Component '" + component.name() + "' must be set\"))");
             }
         }
 

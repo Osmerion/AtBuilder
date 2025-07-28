@@ -80,7 +80,7 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                      */
                     public Foo build() {
                         return new Foo(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }
@@ -153,7 +153,7 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                      */
                     public Foo.Bar build() {
                         return new Foo.Bar(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }
@@ -225,7 +225,7 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                      */
                     public Foo build() {
                         return new Foo(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }
@@ -299,7 +299,7 @@ public final class NullMarkedTest extends AbstractFunctionalTest {
                      */
                     public Foo.Bar build() {
                         return new Foo.Bar(
-                            this.value.getOrThrow()
+                            this.value.orElseThrow(() -> new IllegalStateException("Component 'value' must be set"))
                         );
                     }
                 }
