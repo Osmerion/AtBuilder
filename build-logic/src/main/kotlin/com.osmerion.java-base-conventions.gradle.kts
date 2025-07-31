@@ -41,11 +41,4 @@ tasks {
             addStringOption("-release", "17")
         }
     }
-
-    withType<Jar>().configureEach {
-        isPreserveFileTimestamps = false
-        isReproducibleFileOrder = true
-
-        includeEmptyDirs = false
-    }
 }
