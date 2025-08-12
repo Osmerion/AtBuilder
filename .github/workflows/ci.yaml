@@ -3,7 +3,8 @@ on:
   - pull_request
   - push
   - workflow_dispatch
-
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -25,7 +26,6 @@ jobs:
       - name: Gradle Assemble
         run: ./gradlew assemble --info -S --show-version
 
-
   build-docs:
     name: Build Documentation
     needs: build
@@ -45,7 +45,6 @@ jobs:
 
       - name: Build JavaDoc
         run: ./gradlew javadoc --info -S --show-version
-
 
   check:
     name: Check

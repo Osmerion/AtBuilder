@@ -1,12 +1,12 @@
 name: Publish
 on:
   - workflow_dispatch
-
+permissions:
+  contents: read
 
 concurrency:
   group: "publish"
   cancel-in-progress: false
-
 
 jobs:
   build:
@@ -28,7 +28,6 @@ jobs:
       - name: Gradle Assemble
         run: ./gradlew assemble --info -S --show-version
 
-
   check:
     name: Check
     runs-on: ubuntu-latest
@@ -47,7 +46,6 @@ jobs:
 
       - name: Gradle Check
         run: ./gradlew check --info -S --show-version
-
 
   build-docs:
     name: Build Documentation
