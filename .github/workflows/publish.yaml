@@ -69,8 +69,8 @@ jobs:
       - name: Build JavaDoc
         run: ./gradlew javadoc --info -S --show-version
 
-  build-artifact-bundles:
-    name: Build Artifact Bundles
+  build-artifact-bundle:
+    name: Build Artifact Bundle
     needs: check
     runs-on: ubuntu-latest
     steps:
@@ -100,7 +100,7 @@ jobs:
 
   central-upload:
     name: Upload to Central Portal
-    needs: [build-artifact-bundles, build-docs]
+    needs: [build-artifact-bundle, build-docs]
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact Bundle
