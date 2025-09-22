@@ -13,7 +13,7 @@ kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version = "0.9
 
 # org.assertj - AssertJ
 # https://github.com/assertj/assertj
-assertj-core = { module = "org.assertj:assertj-core", version = "3.27.5" }
+assertj-core = { module = "org.assertj:assertj-core", version = "3.27.6" }
 
 # org.jetbrains:annotations - JetBrains' Annotations for JVM-based languages
 # https://github.com/JetBrains/java-annotations
