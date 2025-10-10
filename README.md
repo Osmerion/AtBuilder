@@ -157,8 +157,7 @@ public record Person(
 ) {
     
     public static PersonBuilder builder() {
-        return new PersonBuilder()
-            .name("Alice");
+        return new PersonBuilder();
     }
     
 }
