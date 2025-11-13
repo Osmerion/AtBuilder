@@ -5,7 +5,7 @@ junit = "6.0.1"
 [libraries]
 # com.palantir.javapoet - JavaPoet
 # https://github.com/palantir/javapoet
-javapoet = { module = "com.palantir.javapoet:javapoet", version = "0.7.0" }
+javapoet = { module = "com.palantir.javapoet:javapoet", version = "0.8.0" }
 
 # dev.zacsweers.kctfork - Kotlin Compile Testing
 # https://github.com/ZacSweers/kotlin-compile-testing
