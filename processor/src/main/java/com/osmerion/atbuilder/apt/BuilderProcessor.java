@@ -64,6 +64,7 @@ public final class BuilderProcessor extends AbstractProcessor {
                         .orElseThrow();
 
                 this.messager.printMessage(Diagnostic.Kind.ERROR, "@Builder may only be applied to records.", element, annotationMirror);
+                continue;
             }
 
             TypeElement typeElement = (TypeElement) element;
