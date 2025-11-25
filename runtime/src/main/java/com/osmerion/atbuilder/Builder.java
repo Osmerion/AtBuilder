@@ -32,8 +32,8 @@ import java.lang.annotation.Target;
  *
  * <p>An instance of the annotated record can be created by calling the {@code build} method of a builder instance. This
  * method checks if values for all required components have been set and throws an {@link IllegalStateException}
- * otherwise. {@link Omittable} components are not required and initialized with {@link Omittable#absent()} when no value
- * is set.</p>
+ * otherwise. {@link Omittable} components are not required and initialized with {@link Omittable#absent()} when no
+ * value is set.</p>
  *
  * <pre>{@code
  * @Builder
